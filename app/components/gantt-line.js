@@ -27,12 +27,10 @@ export default class GanttLineComponent extends Component {
 
   //dayWidth= alias('chart.dayWidth');
   @alias('chart.dayWidth') dayWidth;
+  @alias('project.minStartDate') dateStart;
+  @alias('project.maxEndDate') dateEnd;
 
   title= '';
-
-  @tracked dateStart= null;
-
-  @tracked dateEnd= null;
 
   
   // collapsed: false, // use ember-bootstrap !
@@ -55,8 +53,8 @@ export default class GanttLineComponent extends Component {
 
   constructor(owner, args) {
     super(owner, args);
-    this.dateStart = args.dateStart;
-    this.dateEnd = args.dateEnd;
+    //this.dateStart = args.dateStart;
+    //this.dateEnd = args.dateEnd;
     this.inllineChilds = args.inlineChilds;
     this.title = args.title;
     this.project = args.project;
@@ -161,13 +159,15 @@ export default class GanttLineComponent extends Component {
 
   @computed('dateStart', 'dayWidth','chart.viewStartDate')
   get barOffset(){
-    return get(this, 'chart').dateToOffset( get(this, 'dateStart') );
+    //return get(this, 'chart').dateToOffset( get(this, 'dateStart') );
+    return get(this, 'chart').dateToOffset( this.dateStart );
   }
 
   // width of bar on months
   @computed('dateStart', 'dateEnd', 'dayWidth') 
   get barWidth() {
-    return get(this, 'chart').dateToOffset( get(this, 'dateEnd'), get(this, 'dateStart'), true );
+    //return get(this, 'chart').dateToOffset( get(this, 'dateEnd'), get(this, 'dateStart'), true );
+    return get(this, 'chart').dateToOffset( this.dateEnd, this.dateStart, true );
   }
 
   // styling for left/width
@@ -177,10 +177,10 @@ export default class GanttLineComponent extends Component {
     let style = '';
 
     if (this.scrolling) {
-      console.log("scrolling");
+      //console.log("scrolling");
       style = `left:${get(this, 'barOffset')}px;width:${get(this, 'barWidth')}px;`;
     } else {
-      console.log("not scrolling");
+      //console.log("not scrolling");
       style = `left:${get(this, 'barOffset')}px;width:${get(this, 'barWidth')}px; transition: left 200ms ease-out;`;
     }
     if (get(this, 'color')) {
@@ -204,9 +204,12 @@ export default class GanttLineComponent extends Component {
   // TODO: title -> ?
   @computed('dateStart', 'dateEnd') 
   get barTitle() {
-    let days = get(this, 'chart').dateToOffset( get(this, 'dateStart') ) / get(this, 'dayWidth');
-    let start = get(this, 'dateStart'),
-        end = get(this, 'dateEnd');
+    //let days = get(this, 'chart').dateToOffset( get(this, 'dateStart') ) / get(this, 'dayWidth');
+    //let start = get(this, 'dateStart'),
+    //    end = get(this, 'dateEnd');
+    let days = get(this, 'chart').dateToOffset( this.dateStart ) / this.dayWidth;
+    let start = this.dateStart,
+        end = this.dateEnd;
 
     if (start && end) {
       return `days: ${days} : `+start.toString()+' to '+end.toString();
@@ -276,11 +279,11 @@ export default class GanttLineComponent extends Component {
 
   activateMove(e) {
     e.preventDefault();
-
     this.initTimlineOffset();
 
     // remember days-duration of line
-    let moveDays = Math.floor(Math.abs(get(this, 'dateStart').getTime() - get(this, 'dateEnd').getTime()) / 86400000);
+    //let moveDays = Math.floor(Math.abs(get(this, 'dateStart').getTime() - get(this, 'dateEnd').getTime()) / 86400000);
+    let moveDays = Math.floor(Math.abs(this.dateStart.getTime() - this.dateEnd.getTime()) / 86400000);
 
     // remember click-offset for adjusting mouse-to-bar
     let mouseOffset = e.clientX - this.offsetLeft(e.target);
@@ -302,24 +305,21 @@ export default class GanttLineComponent extends Component {
 
     // resize left
     if (get(this, 'isResizingLeft')) {
-      dateOffset = (dateOffset > get(this, 'dateEnd')) ? get(this, 'dateEnd') : dateOffset; // dont allow lower than start
+      //dateOffset = (dateOffset > get(this, 'dateEnd')) ? get(this, 'dateEnd') : dateOffset; // dont allow lower than start
+      dateOffset = (dateOffset > this.dateEnd) ? this.dateEnd : dateOffset; // dont allow lower than start
       set(this, 'dateStart', dateOffset);
-      set(this.job, 'dateStart', this.dateStart); 
 
     // resize right
     } else if (get(this, 'isResizingRight')) {
-      dateOffset = (dateOffset < get(this, 'dateStart')) ? get(this, 'dateStart') : dateOffset; // dont allow lower than start
+      //dateOffset = (dateOffset < get(this, 'dateStart')) ? get(this, 'dateStart') : dateOffset; // dont allow lower than start
+      dateOffset = (dateOffset < this.dateStart) ? this.dateStart : dateOffset; // dont allow lower than start
       set(this, 'dateEnd', dateOffset);
-      set(this.job, 'dateEnd', this.dateEnd);
 
     // move
     } else if (get(this, 'isMoving')) {
       let dateOffsetEnd = new Date(dateOffset.getTime() + (get(this, 'movingDays')*86400000));
       set(this, 'dateStart', dateOffset);
       set(this, 'dateEnd', dateOffsetEnd);
-      set(this.job, 'dateStart', this.dateStart); 
-      set(this.job, 'dateEnd', this.dateEnd);
-
     }
 
   };
@@ -350,8 +350,7 @@ export default class GanttLineComponent extends Component {
 
 
   @action
-  //onDataUpdate(job, startDate, endDate) {
-  onDataUpdate() {
+  onDataUpdate(job, startDate, endDate) {
 
     console.log("dataUpdate");
     //console.dir(job);
@@ -365,6 +364,7 @@ export default class GanttLineComponent extends Component {
      //this.topLine.reloadPeriods();
      //this.topLine.calculatePeriods();
      //this.project.maxEndDate  =  dateUtil.datePlusDays(this.project.maxEndDate, 1);
+	 
     this.dateStart = this.project.minStartDate;
     this.dateEnd = this.project.maxEndDate;
   }

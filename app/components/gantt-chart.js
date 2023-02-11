@@ -97,12 +97,13 @@ export default class GanttChartComponent extends Component {
 */
     //this.projects = this.gantt.getTest();
 
-    //this.projects = this.gantt.getTest2();
     this.projects = this.gantt.getTest3();
     //this.projects = this.gantt.getDataScenario1().projects;
 
+    //this.tmp = this.gantt.getDataScenario1();
+    //this.projects = this.tmp.projects;
+
     console.log(this.projects);
-    //this.projects = this.gantt.getDataScenario1();
 
     // bind listener functions
     //this._handleScroll = bind(this, this.updateScroll);
@@ -191,7 +192,6 @@ export default class GanttChartComponent extends Component {
     //     diffDays -=1;
     //}       
           
-
     let offset = diffDays * dayWidth; // borders: border-width can be omitted using `border-box`
 
     return offset;
@@ -289,7 +289,7 @@ export default class GanttChartComponent extends Component {
         if (e.target.className == 'gantt-line-timeline' || e.target.className == 'day') {
            e.preventDefault();
 	   //e.stopPropagation();
-           console.log("mouse down")
+           //console.log("mouse down")
 	   this.mouse_moving = true;
            this.scrolling = true;
 	}
@@ -301,7 +301,7 @@ export default class GanttChartComponent extends Component {
         if (e.target.className == 'gantt-line-timeline' || e.target.className == 'day') {
            e.preventDefault();
 	   //e.stopPropagation();
-           console.log("mouse up:", e.target.className)
+           //console.log("mouse up:", e.target.className)
 	   this.mouse_moving = false;
            this.scrolling = false;
 	}

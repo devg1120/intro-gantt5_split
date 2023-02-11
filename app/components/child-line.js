@@ -157,7 +157,7 @@ export default class ChildLineComponent extends Component {
     if (get(this, 'color')) {
       style+= `background-color:${get(this, 'color')}`;
     }
-    console.log(htmlSafe(style));
+    //console.log(htmlSafe(style));
     return htmlSafe(style);
   }
 
@@ -304,7 +304,8 @@ export default class ChildLineComponent extends Component {
       //    console.log(this.project);
 	  //
     //this.onDataUpdate(this.job, this.dateStart, this.dateEnd);
-    this.onDataUpdate();
+	 
+    //this.onDataUpdate();
 
   }
 
