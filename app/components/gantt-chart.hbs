@@ -1,0 +1,68 @@
+
+<button type="button" {{on "click" (fn this.zoom 5)}}>Zoom in</button> | <button type="button" {{on "click" (fn this.zoom -5)}}>Zoom out</button>
+<br><br>
+
+
+<div class="gantt-chart ember-view"  style="height:100%" {{did-insert this.createElement}} >
+
+<!--
+   <div class="gantt-chart-inner"    style="height:100%" 
+                {{on "mousedown" this.onMouseDown}}
+                {{on "mouseup"   this.onMouseUp  }}
+                {{on "mousemove"  this.onMouseMove }}
+  >
+-->
+   <div class="gantt-chart-inner"    style="height:100%" 
+  >
+
+   <GanttTimeline   @showToday={{this.showToday}} @chart={{this}} />
+
+<SplitView 
+           @direction   ={{"vertical"}} 
+           @gutterSize = {{14}} 
+           @gutterStyle= {{"color:#008000;"}}
+           @sizes      = {{array 50 50}} 
+           @minSize    = {{array 20 20}}
+           @class      = {{"full-height"}}
+           >
+     <div class="gantt-lines " style="background-color:#ffff; overflow-y:scroll; scrollbar-width: none;"
+     >
+   
+        {{#each this.projects as |project|}}
+             <GanttLine  @dateStart={{project.minStartDate}}
+                         @dateEnd={{project.maxEndDate}}
+           	         @inlineChilds={{project.jobs}}
+           	         @title={{project.title}}
+           	         @project={{project}}
+           	         @chart={{this}}
+           	         @chartElement={{this.element_}}
+           	         @scrolling={{this.scrolling}}
+           	         as |line|>
+             </GanttLine>
+	     <hr style="margin:8px;">
+        {{/each}}
+   </div>
+
+
+     <div class="gantt-lines " style=" background-color:#ffff; overflow-y:scroll; scrollbar-width: none;"
+     >
+   
+        {{#each this.projects as |project|}}
+             <GanttLine  @dateStart={{project.minStartDate}}
+                         @dateEnd={{project.maxEndDate}}
+           	         @inlineChilds={{project.jobs}}
+           	         @title={{project.title}}
+           	         @project={{project}}
+           	         @chart={{this}}
+           	         @chartElement={{this.element_}}
+           	         @scrolling={{this.scrolling}}
+           	         as |line|>
+             </GanttLine>
+	     <hr style="margin:8px;">
+        {{/each}}
+   </div>
+
+
+</SplitView>
+</div>
+</div>

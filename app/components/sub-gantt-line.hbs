@@ -1,0 +1,77 @@
+
+
+<div class="gantt-line">
+
+  <SubGanttLineTitle   @child_stack={{this.child_stack}} @project={{@project}}  @onClick={{this.collapse_toggle}} />
+  
+  <div class="gantt-line-timeline">
+<!--
+       <div class="gantt-line-bar" style={{this.barStyle}} title={{this.barTitle}} >
+-->
+<!--
+       <div class="gantt-child-line-bar" style={{this.barStyle}} title={{this.barTitle}} >
+-->
+       <div class="gantt-subproj-line-bar" style={{this.barStyle}} title={{this.barTitle}} >
+
+          <div class="gantt-line-bar-content ember-view">{{@project.title}}</div>
+	 
+      </div>
+
+  </div>
+
+</div>
+
+{{! child lines }}
+
+<div class="gantt-line-childs">
+
+
+   <BsCollapse @collapsed={{this.collapsed}}  >
+       {{#unless this.collapsed }}
+
+           {{#each @project.jobs as |job|}}     
+              {{#if job.isSubProj}}
+                 <SubGanttLine  @dateStart={{job.childpj.minStartDate}}
+                             @dateEnd={{job.childpj.maxEndDate}}
+                             @inlineChilds={{job.childpj.jobs}}
+                             @title={{job.childpj.title}}
+                             @project={{job.childpj}}
+                             @chart={{@chart}}
+                             @chartElement={{this.element_}}
+                             @parent={{this}}
+                             @job={{job}}
+                             @onDataUpdate={{this.onDataUpdate}}
+                             @child_stack={{this.child_stack}}
+                             as |line|>
+                 </SubGanttLine>
+
+	      <!--
+                 <SubGanttLine  @dateStart={{job.childpj.minStartDate}}
+                             @dateEnd={{job.childpj.maxEndDate}}
+                             @inlineChilds={{job.childpj.jobs}}
+                             @title={{job.childpj.title}}
+                             @project={{job.childpj}}
+                             @chart={{this}}
+                             @chartElement={{this.element_}}
+                             as |line|>
+                 </SubGanttLine>
+             -->
+              {{else}}
+                 <ChildLine  @job={{job}}
+                             @parentLine={{this}}
+                             @chart={{@chart}}
+                             @project={{@project}}
+                             @chartElement={{@chartElement}}
+                             @onDataUpdate={{this.onDataUpdate}}
+			     @child_stack={{this.child_stack}}
+                             >
+                 </ChildLine>
+              {{/if}}
+
+           {{/each}}     
+
+       {{/unless}}
+
+   </BsCollapse>
+
+</div>

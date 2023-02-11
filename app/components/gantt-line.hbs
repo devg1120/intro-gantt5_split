@@ -1,0 +1,62 @@
+
+
+<div class="gantt-line">
+
+  <GanttLineTitle @project={{@project}}  @onClick={{this.collapse_toggle}} />
+  
+  <div class="gantt-line-timeline">
+
+
+       <div class="gantt-line-bar" style={{this.barStyle}} title={{this.barTitle}} >
+
+          <div class="gantt-line-bar-content ember-view">{{@project.title}}</div>
+	 
+      </div>
+
+  </div>
+
+</div>
+
+{{! child lines }}
+
+<div class="gantt-line-childs ">
+
+
+   <BsCollapse @collapsed={{this.collapsed}}  >
+       {{#unless this.collapsed }}
+
+           {{#each @project.jobs as |job|}}     
+              {{#if job.isSubProj}}
+	      
+                 <SubGanttLine  @dateStart={{job.childpj.minStartDate}}
+                             @dateEnd={{job.childpj.maxEndDate}}
+                             @inlineChilds={{job.childpj.jobs}}
+                             @title={{job.childpj.title}}
+                             @project={{job.childpj}}
+                             @chart={{@chart}}
+                             @chartElement={{this.element_}}
+			     @parent={{this}}
+			     @job={{job}}
+                             @onDataUpdate={{this.onDataUpdate}}
+			     @child_stack={{0.3}}
+                             as |line|>
+                 </SubGanttLine>
+             
+              {{else}}
+                 <ChildLine  @job={{job}}
+                             @parentLine={{this}}
+                             @chart={{@chart}}
+                             @project={{@project}}
+                             @chartElement={{@chartElement}}
+                             @onDataUpdate={{this.onDataUpdate}}
+			     @child_stack={{0.3}}
+                             >
+                 </ChildLine>
+              {{/if}}
+           {{/each}}     
+       {{/unless}}
+   </BsCollapse>
+   <!--
+       <hr class="gantt-line-title" style="margin:8px;">
+       -->
+</div>

@@ -1,0 +1,22 @@
+
+<div class="gantt-line-title ember-view">   
+<!--
+   <span><a href="" {{action 'collapse' @project}}>
+   <span><a href="" {{on "click" (fn this.collapse @project)}}>
+   <span><a href="" {{on "click" (fn this.collapse )}}>
+   <span><a href="" >
+      {{@project.title}}</a>
+   </span>
+   <button type="button"  {{on "click" (fn this.collapse @project)}} >
+
+   <button type="button"  {{on "click" (fn @onClick )}} >
+      {{@project.title}}
+   </button>
+-->
+  <span style={{this.titleStyle}}>
+   <BsButton @type="button" class="btn btn-outline-primary btn-sm" style="height:22px;padding:0px 8px 2px 8px; border-radius: 2px;" @icon="glyphicon glyphicon-download" @onClick={{@onClick}}  >
+      {{@project.title}}
+   </BsButton>
+  </span>
+</div>
+

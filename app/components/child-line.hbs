@@ -1,0 +1,24 @@
+
+
+<div class="gantt-line"  {{did-insert this.createElement}}>
+   <div class="gantt-line-title ember-view">                 
+      <span style={{this.titleStyle}}>
+        <svg width="12px" height="12px"><circle fill={{@job.color}} cx="5" cy="6" r="5" width="9" height="9"></circle></svg>
+           {{@job.title}}
+      </span>
+   </div>
+   <div class="gantt-line-timeline">
+  <!--
+       <div class="gantt-line-bar  {{if this.isEditable 'gantt-line-bar-editable'}}" style={{this.barStyle}} >
+       -->
+       <div class="gantt-child-line-bar  {{if this.isEditable 'gantt-line-bar-editable'}}" style={{this.barStyle}} >
+   
+	    
+	    <div class="gantt-line-bar-content ember-view">{{@job.title}}</div>
+            <div class="bar-resize-l"></div>
+            <div class="bar-resize-r"></div>
+      </div>
+   </div>
+</div>
+
+
